@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simple Firebase Hosted Webapp Example</title>
+
+  <!-- THESE SCRIPTS MAKE FIREBASE WORK DO NOT DELETE -->
+  <!-- update the version number as needed -->
+  <script defer src="/__/firebase/7.19.1/firebase-app.js"></script>
+  <!-- include only the Firebase features as you need -->
+  <script defer src="/__/firebase/7.19.1/firebase-auth.js"></script>
+  <script defer src="/__/firebase/7.19.1/firebase-database.js"></script>
+  <script defer src="/__/firebase/7.19.1/firebase-messaging.js"></script>
+  <script defer src="/__/firebase/7.19.1/firebase-storage.js"></script>
+  <!-- initialize the SDK after all desired features are loaded -->
+  <script defer src="/__/firebase/init.js"></script>
+
+  <!-- This script is the file with the user code -->
+  <script defer src="main.js"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <!-- See http://www.w3school.com/w3css/ for more info on how to use w3.css -->
+  
+
+  <link rel="stylesheet" href="main.css">
+  <!-- main.css overwrites and extends the CSS provided by w3.css -->
+</head>
+
+<body>
+  <!-- Each screen of the app is a separate section with class screen and w3-container-->
+  <!-- By default, all screens have the style "display:none" - javascript controls which is visible -->
+
+  <!-- LOGIN SCREEN -->
+  <section id="login_screen" class="screen w3-container" style="display:none">
+    <!-- w3.css cards provide a nice border element and shadow -->
+    <div id="login_card" class="w3-card">
+      <header class="w3-container w3-blue" id="login_header">
+        <h1>Login</h1>
+      </header>
+      <div class="w3-container" id="login_content">
+        <p>Please log in with your email and password</p>
+        <p>
+          <label class="w3-text-blue" for="login_email_input">E-mail Address</label>
+          <input class="w3-input" type="email" id="login_email_input">
+          <br>
+
+          <label class="w3-text-blue" for="login_password_input">Password: </label>
+          <input class="w3-input" type="password" id="login_password_input">
+          <br>
+
+          <button id="login_submit_button" class="w3-btn w3-blue">Submit</button>
+        </p>
+      </div>
+
+  </section>
+
+  <!-- HOME SCREEN -->
+  <section id="home_screen" class="w3-container screen" style="display:none">
+    <div id="home_card" class="w3-card">
+      <header class="w3-container w3-blue" id="home_header">
+        <h1>Home</h1>
+      </header>
+      <div class="w3-container" id="home_content">
+        <p>Hello <span class="username"></span>!</p>
+        <p>Choose an option below:</p>
+        <ul class="w3-ul">
+          <li><button class="w3-btn w3-block w3-green w3-round-large" id="register_button">Register a new animal</button></li>
+          <li><button class="w3-btn w3-block w3-green w3-round-large" id="see_registry_button">See Registered Animals</button></li>
+        </ul>
+      </div>
+      <footer class="w3-container w3-blue" id="home_footer">
+        <p>
+          <a href="#" class="logout_link">Log Out</a>
+        </p>
+      </footer>
+    </div>
+  </section>
+
+  <!-- SCREEN TO REGISTER A NEW VETERINARY PATIENT -->
+  <section id="submit_data_screen" class="w3-container screen" style = "display:none">
+    <div id="submit_data_card" class="w3-card">
+      <header id="submit_data_header" class="w3-container w3-blue">
+        <h1>Register a new veterinary patient</h1>
+      </header>
+      <!-- the form isn't really required, but makes it easier to read in all the data at once-->
+      <form id="submit_data_content" class="w3-container" name="registration_form">
+        <p>
+          <label class="w3-text-blue" for="submit_data_species_input">Species</label>
+          <input class="w3-input" type="text" id="submit_data_species_input" name="species">
+          <br>
+
+          <label class="w3-text-blue" for="submit_data_name_input">Name</label>
+          <input class="w3-input" type="text" id="submit_data_name_input" name="name">
+          <br>
+
+          <label class="w3-text-blue" for="submit_data_color_input">Color</label>
+          <input class="w3-input" type="text" id="submit_data_color_input" name="color">
+          <br>
+
+          <label class="w3-text-blue" for="submit_data_birthdate_input">Birthdate (estimate is fine)</label>
+          <input class="w3-input" type="date" id="submit_data_birthdate_input" name="birthdate">
+          <br>
+
+          <label class="w3-text-blue" for="submit_data_ownername_input">Owner's Name</label>
+          <input class="w3-input" type="text" id="submit_data_ownername_input" name="ownername">
+          <br>
+
+          <label class="w3-text-blue" for="submit_data_owneremail_input">Owner's Email</label>
+          <input class="w3-input" type="email" id="submit_data_owneremail_input" name="owneremail">
+          <br>
+
+          <button id="submit_data_button" class="w3-btn w3-blue">Submit</button>
+        </p>
+      </form>
+      <footer class="w3-container w3-blue" id="show_data_footer">
+        <p>
+          <a href="#" class="return_home">Go Home</a>
+        </p>
+      </footer>
+    </div>
+  </section>
+
+  <!-- SCREEN TO VISUALIZE THE PATIENT DATA -->
+  <section id="show_data_screen" class="w3-container screen" style="display:none">
+    <div id="show_data_card" class="w3-card">
+      <header class="w3-container w3-blue" id="show_data_header">
+        <h1>Patient List</h1>
+      </header>
+      <div class="w3-container" id="show_data_content">
+        <ul class="w3-ul" id="patient_list"></ul>
+      </div>
+      <footer class="w3-container w3-blue" id="show_data_footer">
+        <p>
+          <a href="#" class="return_home">Go Home</a>
+        </p>
+      </footer>
+    </div>
+  </section>
+
+
+
+  <!-- THE CODE BELOW WAS GENERATED BY FIREBASE -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+      // // The Firebase SDK is initialized and available here!
+      //
+      // firebase.auth().onAuthStateChanged(user => { });
+      // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+      // firebase.messaging().requestPermission().then(() => { });
+      // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+      //
+      // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+      try {
+        let app = firebase.app();
+        let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
+      } catch (e) {
+        console.error(e);
+      }
+    });
+  </script>
+</body>
+
+</html>
