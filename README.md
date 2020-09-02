@@ -11,5 +11,5 @@ Steps to use this project (there may be other pathways):
 7. Open the folder in Visual Studio Code. You can usually do this by typing `code .` or you can open VS Code yourself and choose "File->Open Folder" then navigate to the folder you just made.
 8. Copy and paste the code in `public/index.html` from github into the `public/index.html` in the project on VS Code, overwriting the old code.
 9. Create new files in `public` on your computer called `main.css` and `main.js` and copy the code from this project into those files
-10. Go back to VS Code, open a Terminal with `Terminal -> New Terminal` and in that terminal type `firebase serve`. After a minute, a link should show up like `https://localhost:5000`. Navigate to the site to test the app
+10. Go back to VS Code, open a Terminal with `Terminal -> New Terminal` and in that terminal type `firebase serve`. After a minute, a link should show up like `https://localhost:5000`. Navigate to the site to test the app.
 11. Have fun tweaking and coding! I added comments to help as much as I could.
