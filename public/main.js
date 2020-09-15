@@ -60,10 +60,9 @@ firebase.database().ref("/patients").on('child_added',
 
 /** Makes the HTML in the patient register match the database */
 function add_patient_html(p) {
-
-    var list = document.getElementById("patient_list");
-    var newHTML = "<li><details><summary>" + patient_register[p].name + "</summary>";
-    newHTML += "<ul class='w3-ul'><br>";
+    let list = document.getElementById("patient_list");
+    let newHTML = "<li><details><summary>" + patient_register[p].name + "</summary>";
+    newHTML += "<ul id='data" + p + "' class='w3-ul'><br>";
     newHTML += "<li>Name: " + patient_register[p].name + "</li>"
     newHTML += "<li>Species: " + patient_register[p].species + "</li>"
     newHTML += "<li>Color: " + patient_register[p].color + "</li>"
@@ -71,9 +70,25 @@ function add_patient_html(p) {
     newHTML += "<li>Owner Name: " + patient_register[p].ownername + "</li>"
     newHTML += "<li>Owner Email: " + patient_register[p].owneremail + "</li>"
     newHTML += "<li>Unique ID: " + p + "</li>"
+    newHTML += "</ul>"
     newHTML += "</details></li>\n";
 
     list.innerHTML += newHTML;
+    // add the image, if it exists!
+    if (patient_register[p].hasPhoto) {
+        let storageRef = firebase.storage().ref("patientPhotos/" + p);
+        storageRef.getDownloadURL()
+        .then( (url) =>
+            {
+                let d = document.getElementById("data"+ p);
+                d.insertAdjacentHTML("afterend", 
+                    "<div class='w3-card'>\n"+
+                    "<img src='"+ url + "' class='w3-margin w3-col w3-round w3-border'>\n" +
+                    "</div>");
+            }
+        )
+        .catch ((e) => {})
+    }
 }
 
 function register_new_animal(event) {
@@ -98,6 +113,15 @@ function register_new_animal(event) {
     let patient_ref = firebase.database().ref("/patients");
     // the .push() method automatically gives the record a unique ID and creates a reference to it
     var newPatientRef = patient_ref.push();
+
+    // now upload the image to the database with the same reference ID
+    let photoUpload = document.getElementById("submit_data_photo");
+    if (photoUpload.files.length > 0) {
+        let storageRef = firebase.storage().ref("patientPhotos/" + newPatientRef.getKey())
+        storageRef.put(photoUpload.files[0]);
+        newAnimal["hasPhoto"] = "true";
+    }
+
     // the .set() method actually puts the data in the database
     newPatientRef.set(newAnimal);
     go_home();
